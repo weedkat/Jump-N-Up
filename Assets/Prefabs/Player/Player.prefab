@@ -207,13 +207,16 @@ MonoBehaviour:
   groundCheck: {fileID: 8128307142647824885}
   spriteRenderer: {fileID: 8128307142859021831}
   playerHealth: {fileID: 8128307141711142836}
+  playerFuel: {fileID: 839124363134045221}
   movementSpeed: 4
   jumpPower: 25
   allowedJumps: 2
   jumpDuration: 0.2
+  fuelDuration: 1
   jumpEffect: {fileID: 8575377121547827367, guid: 8fdea087819dadf4cb9c75a92cb4227e, type: 3}
   passThroughLayers: []
   flyPower: 5
+  fuelConsumption: 1
   state: 0
 --- !u!114 &8128307141711142836
 MonoBehaviour:
@@ -251,6 +254,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c30e8530204471a4b800ef43f59d287c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  defaultFuel: 50
+  maximumFuel: 100
+  currentFuel: 50
+  isUnlimited: 0
+  time: 0
 --- !u!114 &5168251848734213253
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -264,7 +272,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerController: {fileID: 8128307141711142835}
-  animator: {fileID: 0}
+  animator: {fileID: 3092544872074045784}
 --- !u!1 &8128307142647824882
 GameObject:
   m_ObjectHideFlags: 0
@@ -351,6 +359,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8128307142859021830}
   - component: {fileID: 8128307142859021831}
+  - component: {fileID: 3092544872074045784}
   m_Layer: 8
   m_Name: PlayerSprite
   m_TagString: Untagged
@@ -423,3 +432,22 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!95 &3092544872074045784
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8128307142859021829}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 81218ac815b263b4198ea0acc0b8ffc3, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0

@@ -81,6 +81,16 @@ public class PlayerAnimator : MonoBehaviour
             animator.SetBool("isFalling", false);
         }
 
+        if (playerController.state == PlayerController.PlayerState.Flying)
+        {
+            animator.SetBool("isFalling", true);
+        }
+        else
+        {
+            animator.SetBool("isFalling", false);
+        }
+
+
         if (playerController.state == PlayerController.PlayerState.Walk)
         {
             animator.SetBool("isWalking", true);
