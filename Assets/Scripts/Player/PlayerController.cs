@@ -293,14 +293,14 @@ public class PlayerController : MonoBehaviour
     /// <returns>IEnumerator: makes coroutine possible</returns>
     private IEnumerator Jump(float powerMultiplier = 1.0f)
     {
-        if (timesJumped < allowedJumps && state != PlayerState.Dead)
+        float time = 0;
+        int localJump = timesJumped + 1;
+        if (localJump < allowedJumps && state != PlayerState.Dead)
         {
             jumping = true;
-            float time = 0;
             SpawnJumpEffect();
             playerRigidbody.velocity = new Vector2(playerRigidbody.velocity.x, 0);
             playerRigidbody.AddForce(transform.up * jumpPower * powerMultiplier, ForceMode2D.Impulse);
-            timesJumped++;
             while (time < jumpDuration)
             {
                 yield return null;
@@ -308,6 +308,7 @@ public class PlayerController : MonoBehaviour
             }
             jumping = false;
         }
+        timesJumped++;
     }
     /// <summary>
     /// Description:
