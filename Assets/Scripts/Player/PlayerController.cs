@@ -336,15 +336,18 @@ public class PlayerController : MonoBehaviour
     /// <returns>IEnumerator: makes coroutine possible</returns>
     private IEnumerator Fly(float powerMultiplier = 1f)
     {
+        GameObject rocket = this.transform.GetChild(4).gameObject;
         while (jumpHeld && playerFuel.currentFuel >= fuelConsumption)
         {
             playerFuel.consumeFuel(fuelConsumption);
             flying = true;
+            rocket.SetActive(true);
             playerRigidbody.velocity = new Vector2(playerRigidbody.velocity.x, 0);
             playerRigidbody.AddForce(transform.up * flyPower * powerMultiplier, ForceMode2D.Impulse);
             yield return null;
         }
         flying = false;
+        rocket.SetActive(false);
     }
 
 
@@ -397,12 +400,19 @@ public class PlayerController : MonoBehaviour
     {
         if (spriteRenderer != null)
         {
+            GameObject rocket = this.transform.GetChild(4).gameObject;
             if (facing == PlayerDirection.Left)
             {
+                Vector3 localPos = rocket.transform.localPosition;
+                localPos.x = 0.235f;
+                rocket.transform.localPosition = localPos;
                 spriteRenderer.flipX = true;
             }
             else
             {
+                Vector3 localPos = rocket.transform.localPosition;
+                localPos.x = -0.23f;
+                rocket.transform.localPosition = localPos;
                 spriteRenderer.flipX = false;
             }
         }
