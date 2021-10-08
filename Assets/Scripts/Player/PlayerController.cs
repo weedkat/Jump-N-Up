@@ -313,7 +313,7 @@ public class PlayerController : MonoBehaviour
     /// </summary>
     private void HandleFlyInput()
     {
-        if(timesJumped > 0 && !jumpInput)
+        if(timesJumped > 0 && !jumpInput && state != PlayerState.Dead)
         {
             StartCoroutine("Fly", 1f);
         }
