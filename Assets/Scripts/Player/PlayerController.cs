@@ -19,6 +19,8 @@ public class PlayerController : MonoBehaviour
     public SpriteRenderer spriteRenderer = null;
     [Tooltip("The health component attached to the player.")]
     public Health playerHealth;
+    [Tooltip("The fuel component attached to the player.")]
+    public Fuel playerFuel;
 
     // The rigidbody used to move the player (necessary for this component, so not made public)
     private Rigidbody2D playerRigidbody = null;
@@ -124,12 +126,16 @@ public class PlayerController : MonoBehaviour
     public int allowedJumps = 1;
     [Tooltip("The duration that the player spends in the \"jump\" state")]
     public float jumpDuration = 0.1f;
+    [Tooltip("how long fuel last")]
+    public float fuelDuration = 1.0f;
     [Tooltip("The effect to spawn when the player jumps")]
     public GameObject jumpEffect = null;
     [Tooltip("Layers to pass through when moving upwards")]
     public List<string> passThroughLayers = new List<string>();
     [Tooltip("The force with which the player fly.")]
     public float flyPower = 5.0f;
+    [Tooltip("How much fuel to fly.")]
+    public int fuelConsumption = 1;
 
     // The number of times this player has jumped since being grounded
     private int timesJumped = 0;
@@ -150,6 +156,7 @@ public class PlayerController : MonoBehaviour
         Walk,
         Jump,
         Fall,
+        Flying,
         Dead
     }
 
@@ -289,7 +296,6 @@ public class PlayerController : MonoBehaviour
         if (timesJumped < allowedJumps && state != PlayerState.Dead)
         {
             jumping = true;
-            flying = true;
             float time = 0;
             SpawnJumpEffect();
             playerRigidbody.velocity = new Vector2(playerRigidbody.velocity.x, 0);
@@ -330,13 +336,17 @@ public class PlayerController : MonoBehaviour
     /// <returns>IEnumerator: makes coroutine possible</returns>
     private IEnumerator Fly(float powerMultiplier = 1f)
     {
-        while (flying && jumpHeld)
+        while (jumpHeld && playerFuel.currentFuel >= fuelConsumption)
         {
+            playerFuel.consumeFuel(fuelConsumption);
+            flying = true;
             playerRigidbody.velocity = new Vector2(playerRigidbody.velocity.x, 0);
             playerRigidbody.AddForce(transform.up * flyPower * powerMultiplier, ForceMode2D.Impulse);
             yield return null;
         }
+        flying = false;
     }
+
 
     /// <summary>
     /// Description:
@@ -444,7 +454,6 @@ public class PlayerController : MonoBehaviour
         }
         else if (grounded)
         {
-            flying = false;
             timesJumped = 0;
             if (playerRigidbody.velocity.magnitude > 0)
             {
@@ -460,6 +469,10 @@ public class PlayerController : MonoBehaviour
             if (jumping)
             {
                 SetState(PlayerState.Jump);
+            }
+            else if (flying)
+            {
+                SetState(PlayerState.Flying);
             }
             else
             {

@@ -11,40 +11,37 @@ public class Fuel : MonoBehaviour
     [Tooltip("The maximum fuel value")]
     public int maximumFuel = 100;
     [Tooltip("The current in game fuel value")]
-    public int currentFuel = 50;
+    public float currentFuel = 50;
     // Whether or not the health is invincible
     public bool isUnlimited = false;
 
+    public float time = 0;
     // Start is called before the first frame update
     void Start()
     {
-        
+
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+
     }
-    public bool isCanFly(int fuelAmount)
+
+    public void consumeFuel(int fuelNeeded)
     {
-        if (isUnlimited)
-        {
-            return true;
-        }
-        else
-        {
-            if (currentFuel >= fuelAmount)
+            if (isUnlimited)
             {
-                currentFuel -= fuelAmount;
-                return true;
+                return;
             }
             else
             {
-                return false;
+                if (currentFuel >= fuelNeeded)
+                {
+                    currentFuel -= fuelNeeded * 0.0001f;
+                }
+                GameManager.UpdateUIElements();
             }
-            GameManager.UpdateUIElements();
-        }
-        
     }
+
 }
