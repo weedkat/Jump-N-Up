@@ -28,7 +28,7 @@ public class Fuel : MonoBehaviour
 
     }
 
-    public void consumeFuel(int fuelNeeded)
+    public void consumeFuel(float fuelNeeded)
     {
             if (isUnlimited)
             {
@@ -38,7 +38,7 @@ public class Fuel : MonoBehaviour
             {
                 if (currentFuel >= fuelNeeded)
                 {
-                    currentFuel -= fuelNeeded * 0.0001f;
+                    currentFuel -= fuelNeeded * 0.1f;
                 }
                 GameManager.UpdateUIElements();
             }

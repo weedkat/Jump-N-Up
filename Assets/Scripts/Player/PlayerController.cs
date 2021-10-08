@@ -318,6 +318,8 @@ public class PlayerController : MonoBehaviour
     /// Return:
     /// void (no return)
     /// </summary>
+    /// 
+    public bool consuming = false;
     private void HandleFlyInput()
     {
         if(timesJumped > 0 && !jumpInput && state != PlayerState.Dead)
@@ -337,20 +339,41 @@ public class PlayerController : MonoBehaviour
     /// <returns>IEnumerator: makes coroutine possible</returns>
     private IEnumerator Fly(float powerMultiplier = 1f)
     {
+        float time;
+        int loop = 0;
         GameObject rocket = this.transform.GetChild(4).gameObject;
         while (jumpHeld && playerFuel.currentFuel >= fuelConsumption)
         {
-            playerFuel.consumeFuel(fuelConsumption);
+            if (loop % 100 == 0)
+            {
+                playerFuel.consumeFuel(fuelConsumption);
+            }
             flying = true;
             rocket.SetActive(true);
             playerRigidbody.velocity = new Vector2(playerRigidbody.velocity.x, 0);
             playerRigidbody.AddForce(transform.up * flyPower * powerMultiplier, ForceMode2D.Impulse);
+            loop++;
             yield return null;
+
         }
         flying = false;
         rocket.SetActive(false);
     }
 
+    public void consumeFuel()
+    {
+        float time = 0;
+        playerFuel.consumeFuel(fuelConsumption);
+        while(time < 10.0f)
+        {
+            time += Time.deltaTime;
+        }
+        if (consuming)
+        {
+            consuming = false;
+        }
+        
+    }
 
     /// <summary>
     /// Description:
