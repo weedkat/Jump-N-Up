@@ -97,6 +97,18 @@ public class PlayerController : MonoBehaviour
                 return false;
         }
     }
+
+    // the jump input collected from the input manager
+    public bool jumpHeld
+    {
+        get
+        {
+            if (inputManager != null)
+                return inputManager.jumpHeld;
+            else
+                return false;
+        }
+    }
     #endregion
     #endregion
 
@@ -116,11 +128,16 @@ public class PlayerController : MonoBehaviour
     public GameObject jumpEffect = null;
     [Tooltip("Layers to pass through when moving upwards")]
     public List<string> passThroughLayers = new List<string>();
+    [Tooltip("The force with which the player fly.")]
+    public float flyPower = 5.0f;
 
     // The number of times this player has jumped since being grounded
     private int timesJumped = 0;
     // Whether the player is in the middle of a jump right now
     private bool jumping = false;
+    #endregion
+    // Whether the player is in the middle of a jump right now
+    private bool flying = false;
     #endregion
 
     #region Player State Variables
@@ -138,7 +155,6 @@ public class PlayerController : MonoBehaviour
 
     // The player's current state (walking, idle, jumping, or falling)
     public PlayerState state = PlayerState.Idle;
-    #endregion
     #endregion
 
     #region Functions
@@ -185,6 +201,7 @@ public class PlayerController : MonoBehaviour
     {
         HandleMovementInput();
         HandleJumpInput();
+        HandleFlyInput();
     }
 
     /// <summary>
@@ -231,7 +248,7 @@ public class PlayerController : MonoBehaviour
             foreach (string layerName in passThroughLayers)
             {
                 Physics2D.IgnoreLayerCollision(LayerMask.NameToLayer("Player"), LayerMask.NameToLayer(layerName), true);
-            } 
+            }
         }
         else
         {
@@ -272,6 +289,7 @@ public class PlayerController : MonoBehaviour
         if (timesJumped < allowedJumps && state != PlayerState.Dead)
         {
             jumping = true;
+            flying = true;
             float time = 0;
             SpawnJumpEffect();
             playerRigidbody.velocity = new Vector2(playerRigidbody.velocity.x, 0);
@@ -283,6 +301,40 @@ public class PlayerController : MonoBehaviour
                 time += Time.deltaTime;
             }
             jumping = false;
+        }
+    }
+    /// <summary>
+    /// Description:
+    /// Handles jump input
+    /// Input:
+    /// none
+    /// Return:
+    /// void (no return)
+    /// </summary>
+    private void HandleFlyInput()
+    {
+        if(timesJumped > 0 && !jumpInput)
+        {
+            StartCoroutine("Fly", 1f);
+        }
+    }
+
+    /// <summary>
+    /// Description:
+    /// Coroutine which causes the player to jump.
+    /// Input: 
+    /// none
+    /// Return: 
+    /// void (no return)
+    /// </summary>
+    /// <returns>IEnumerator: makes coroutine possible</returns>
+    private IEnumerator Fly(float powerMultiplier = 1f)
+    {
+        while (flying && jumpHeld)
+        {
+            playerRigidbody.velocity = new Vector2(playerRigidbody.velocity.x, 0);
+            playerRigidbody.AddForce(transform.up * flyPower * powerMultiplier, ForceMode2D.Impulse);
+            yield return null;
         }
     }
 
@@ -392,6 +444,8 @@ public class PlayerController : MonoBehaviour
         }
         else if (grounded)
         {
+            flying = false;
+            timesJumped = 0;
             if (playerRigidbody.velocity.magnitude > 0)
             {
                 SetState(PlayerState.Walk);
@@ -399,10 +453,6 @@ public class PlayerController : MonoBehaviour
             else
             {
                 SetState(PlayerState.Idle);
-            }
-            if (!jumping)
-            {
-                timesJumped = 0;
             }
         }
         else
