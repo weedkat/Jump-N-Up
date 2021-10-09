@@ -16,6 +16,7 @@ public class GasStation : MonoBehaviour
         {
             instance = FindObjectOfType<GameManager>();
         }
+        fuel = FindObjectOfType<Fuel>();
     }
 
     private void OnTriggerEnter2D(Collider2D collision)

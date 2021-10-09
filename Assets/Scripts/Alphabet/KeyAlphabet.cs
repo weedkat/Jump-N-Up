@@ -89,5 +89,6 @@ public static class KeyAlphabet
     public static void ClearKeyAlphabet()
     {
         CollectedAlphabet.Clear();
+        AlphabetNeeded.Clear();
     }
 }
