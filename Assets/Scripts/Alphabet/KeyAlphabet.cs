@@ -8,6 +8,7 @@ public static class KeyAlphabet
     // The IDs of the keys held by the player
     public static List<char> CollectedAlphabet = new List<char>() {};
     public static Dictionary<int, char> AlphabetNeeded = new Dictionary<int, char>(){};
+    public static bool finish = false;
 
     /// <summary>
     /// Description:

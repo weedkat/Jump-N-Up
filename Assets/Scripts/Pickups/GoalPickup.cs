@@ -28,7 +28,7 @@ public class GoalPickup : Pickup
     {
         if (collision.tag == "Player" && collision.gameObject.GetComponent<Health>() != null)
         {
-            if (KeyAlphabet.CanFinish() && GameManager.instance != null)
+            if (KeyAlphabet.finish && GameManager.instance != null)
             {
                 GameManager.instance.LevelCleared();
                 KeyAlphabet.ClearKeyAlphabet();

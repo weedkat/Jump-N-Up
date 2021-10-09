@@ -51,6 +51,19 @@ public class AlphabetDisplay : UIelement
         }
     }
 
+    public void canFinish()
+    {
+        foreach(char x in message)
+        {
+            if(x == '_')
+            {
+                KeyAlphabet.finish = false;
+                return;
+            }
+        }
+        KeyAlphabet.finish = true;
+    }
+
     /// <summary>
     /// Description:
     /// Updates this UI based on this class
@@ -63,6 +76,8 @@ public class AlphabetDisplay : UIelement
     {
         // This calls the base update UI function from the UIelement class
         base.UpdateUI();
+
+        canFinish();
 
         // The remaining code is only called for this sub-class of UIelement and not others
         DisplayScore();
