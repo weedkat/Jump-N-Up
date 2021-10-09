@@ -16,7 +16,7 @@ public class FuelBar : UIelement
         {
             Fuel playerFuel = GameManager.instance.player.GetComponent<Fuel>();
             slider.maxValue = playerFuel.maximumFuel;
-            slider.value = playerFuel.currentFuel;
+            slider.value = (int)playerFuel.currentFuel;
             fill.color = gradient.Evaluate(1f);
         }
     }

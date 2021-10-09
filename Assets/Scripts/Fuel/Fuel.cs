@@ -14,6 +14,8 @@ public class Fuel : MonoBehaviour
     public float currentFuel = 50;
     // Whether or not the health is invincible
     public bool isUnlimited = false;
+    [Tooltip("The UIManager component which manages the current scene's UI")]
+    public UIManager uiManager = null;
 
     public float time = 0;
     // Start is called before the first frame update
@@ -42,6 +44,14 @@ public class Fuel : MonoBehaviour
                 }
                 GameManager.UpdateUIElements();
             }
+    }
+
+    public void addFuel(float fuel)
+    {
+        if(currentFuel <= maximumFuel)
+        {
+            currentFuel += fuel * 0.1f;
+        }
     }
 
 }

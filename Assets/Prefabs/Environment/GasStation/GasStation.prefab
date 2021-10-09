@@ -142,4 +142,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 693449d0ab8ca804dac6ad39b3b212e5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  addSpeed: 5
   gasAnimator: {fileID: 2994571643858984894}

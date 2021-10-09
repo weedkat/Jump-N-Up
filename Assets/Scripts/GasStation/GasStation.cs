@@ -5,40 +5,46 @@ using UnityEngine;
 public class GasStation : MonoBehaviour
 {
     private bool fuelling = true;
+    public float addSpeed = 1.0f;
     public Animator gasAnimator = null;
+    private Fuel fuel = null;
+    public static GameManager instance = null;
 
+    private void Awake()
+    {
+        if (instance == null)
+        {
+            instance = FindObjectOfType<GameManager>();
+        }
+    }
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        Fuel fuel = collision.GetComponent<Fuel>();
         if(fuel != null)
         {
             gasAnimator.SetBool("isActive", true);
+        }
+        else
+        {
+            fuel = collision.gameObject.GetComponent<Fuel>();
         }
     }
 
     private void OnTriggerStay2D(Collider2D collision)
     {   
-        Fuel fuel = collision.GetComponent<Fuel>();
-        
         if (fuel.currentFuel < fuel.maximumFuel)
         {
             fuelling = true;
         }
         if (collision.tag == "Player"  && fuelling && fuel != null)
         {
-            Debug.Log("masuk collide");
             gasAnimator.SetBool("isActive", true);
-            if (fuel.currentFuel < fuel.maximumFuel)
-                {
-                    // StartCoroutine(increase(fuel.currentFuel));
-                    // GameManager.UpdateUIElements();
-                    fuel.currentFuel += 0.1f;
-                }
-            else
-                {
-                fuelling = false;
-                }
+            fuel.addFuel(addSpeed);
+            UpdateUIElements();
+        }
+        else
+        {
+            fuelling = false;
         }
         if(!fuelling)
         {
@@ -57,6 +63,13 @@ public class GasStation : MonoBehaviour
         if(fuel != null)
         {
             gasAnimator.SetBool("isActive", false);
+        }
+    }
+    public static void UpdateUIElements()
+    {
+        if (instance != null && instance.uiManager != null)
+        {
+            instance.uiManager.UpdateUI();
         }
     }
 }
