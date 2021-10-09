@@ -339,7 +339,6 @@ public class PlayerController : MonoBehaviour
     /// <returns>IEnumerator: makes coroutine possible</returns>
     private IEnumerator Fly(float powerMultiplier = 1f)
     {
-        float time;
         int loop = 0;
         GameObject rocket = this.transform.GetChild(4).gameObject;
         while (jumpHeld && playerFuel.currentFuel >= fuelConsumption)

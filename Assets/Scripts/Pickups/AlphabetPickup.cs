@@ -22,6 +22,7 @@ public class AlphabetPickup : Pickup
         if (collision.tag == "Player" && collision.gameObject.GetComponent<Health>() != null)
         {
             KeyAlphabet.AddAlphabet(Alphabet);
+            GameManager.UpdateUIElements();
         }
         base.DoOnPickup(collision);
     }

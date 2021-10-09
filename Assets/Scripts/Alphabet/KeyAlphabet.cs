@@ -6,8 +6,8 @@ using System.Linq;
 public static class KeyAlphabet
 {
     // The IDs of the keys held by the player
-    private static List<char> CollectedAlphabet = new List<char>() {};
-    private static Dictionary<int, char> AlphabetNeeded = new Dictionary<int, char>(){};
+    public static List<char> CollectedAlphabet = new List<char>() {};
+    public static Dictionary<int, char> AlphabetNeeded = new Dictionary<int, char>(){};
 
     /// <summary>
     /// Description:
