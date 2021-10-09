@@ -3,26 +3,38 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class HealthBar : MonoBehaviour
+public class FuelBar : UIelement
 {
 
 	public Slider slider;
 	public Gradient gradient;
 	public Image fill;
 
-	public void SetMaxHealth(int health)
-	{
-		slider.maxValue = health;
-		slider.value = health;
-
-		fill.color = gradient.Evaluate(1f);
-	}
-
-    public void SetHealth(int health)
-	{
-		slider.value = health;
-
-		fill.color = gradient.Evaluate(slider.normalizedValue);
-	}
-
+    private void Start()
+    {
+        if (GameManager.instance != null && GameManager.instance.player != null)
+        {
+            Fuel playerFuel = GameManager.instance.player.GetComponent<Fuel>();
+            slider.maxValue = playerFuel.maximumFuel;
+            slider.value = playerFuel.currentFuel;
+            fill.color = gradient.Evaluate(1f);
+        }
+    }
+    /// <summary>
+    /// Description:
+    /// Upadates this UI element
+    /// Input: 
+    /// none
+    /// Return: 
+    /// void (no return)
+    /// </summary>
+    public override void UpdateUI()
+    {
+        if (GameManager.instance != null && GameManager.instance.player != null)
+        {
+            Fuel playerFuel = GameManager.instance.player.GetComponent<Fuel>();
+            slider.value = (int)playerFuel.currentFuel;
+            fill.color = gradient.Evaluate(slider.normalizedValue);
+        }
+    }
 }
