@@ -12,6 +12,7 @@ public class AlphabetDisplay : UIelement
     [Tooltip("The text to use when displaying the score")]
     public Text displayText = null;
     List<char> message = new List<char>();
+    Dictionary<char, int> timeChange = new Dictionary<char, int>();
 
     /// <summary>
     /// Description:
@@ -28,6 +29,32 @@ public class AlphabetDisplay : UIelement
         {
             message.Add('_');
         }
+        timeChange.Add('a', 0);
+        timeChange.Add('b', 0);
+        timeChange.Add('c', 0);
+        timeChange.Add('d', 0);
+        timeChange.Add('e', 0);
+        timeChange.Add('f', 0);
+        timeChange.Add('g', 0);
+        timeChange.Add('h', 0);
+        timeChange.Add('i', 0);
+        timeChange.Add('j', 0);
+        timeChange.Add('k', 0);
+        timeChange.Add('l', 0);
+        timeChange.Add('m', 0);
+        timeChange.Add('n', 0);
+        timeChange.Add('o', 0);
+        timeChange.Add('p', 0);
+        timeChange.Add('q', 0);
+        timeChange.Add('r', 0);
+        timeChange.Add('s', 0);
+        timeChange.Add('t', 0);
+        timeChange.Add('u', 0);
+        timeChange.Add('v', 0);
+        timeChange.Add('w', 0);
+        timeChange.Add('x', 0);
+        timeChange.Add('y', 0);
+        timeChange.Add('z', 0);
     }
     public void DisplayScore()
     {
@@ -36,13 +63,24 @@ public class AlphabetDisplay : UIelement
             string word = "";
             List<char> collected = KeyAlphabet.CollectedAlphabet;
             int i = 0;
+            Dictionary<char, int> timeChangeLocal = timeChange;
             foreach (KeyValuePair<int, char> x in KeyAlphabet.AlphabetNeeded)
             {
                 int index = collected.IndexOf(x.Value);
+                int key = x.Key - 1;
                 if(index >= 0)
                 {
-                    message[x.Key-1] = x.Value;
-                    collected.RemoveAt(index);
+                    int dif = timeChange[x.Value] - timeChangeLocal[x.Value];
+                    if (timeChangeLocal[x.Value] == 0)
+                    {
+                        message[key] = x.Value;
+                        collected.RemoveAt(index);
+                        timeChange[x.Value]++;
+                    }
+                    else
+                    {
+                        timeChangeLocal[x.Value]--;
+                    }
                 }
                 word = word + message[i];
                 i++;
