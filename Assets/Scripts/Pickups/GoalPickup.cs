@@ -7,6 +7,7 @@ using UnityEngine;
 /// </summary>
 public class GoalPickup : Pickup
 {
+    [SerializeField] private string sentence = null;
     /// <summary>
     /// Description:
     /// Function called when this pickup is picked up
@@ -17,15 +18,22 @@ public class GoalPickup : Pickup
     /// void (no return)
     /// </summary>
     /// <param name="collision">The collider that is picking up this pickup</param>
+
+    private void Start()
+    {
+        KeyAlphabet.AddSentence(sentence);
+    }
+
     public override void DoOnPickup(Collider2D collision)
     {
         if (collision.tag == "Player" && collision.gameObject.GetComponent<Health>() != null)
         {
-            if (GameManager.instance != null)
+            if (KeyAlphabet.CanFinish() && GameManager.instance != null)
             {
                 GameManager.instance.LevelCleared();
+                KeyAlphabet.ClearKeyAlphabet();
+                base.DoOnPickup(collision);
             }
         }
-        base.DoOnPickup(collision);
     }
 }
